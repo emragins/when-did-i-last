@@ -1,9 +1,13 @@
 {
   "rules": {
-    ".read": "true",
-    ".write": "true",
-    "actions": {
-      ".validate" : "newData.isString() && newData.val().length > 0"
+    "$uid": {
+      ".read": "$uid === auth.uid",
+      ".write": "$uid === auth.uid",
+      "actions": {
+        "$actionId":{
+        	".validate" : "newData.isString() && newData.val().length > 0"
+        }
+      }
     }
   }
 }

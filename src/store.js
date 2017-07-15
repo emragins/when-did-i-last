@@ -1,14 +1,29 @@
+import firebase from 'firebase';
 import fire from './fire';
 import moment from 'moment';
 
+let uid = 'anon';
 export default class Store {
   constructor() {
     this.dbRefs = {};
+
+    firebase.auth().onAuthStateChanged(function (u) {
+      if (u) {
+        uid = u.uid;
+
+        // ...
+      } else {
+        uid = 'anon'
+        // User is signed out.
+        // ...
+      }
+    })
   }
 
 
+
   watchActions(onAdd, onRemove) {
-    let actionsRef = fire.database().ref('actions').orderByKey().limitToLast(100);
+    let actionsRef = fire.database().ref(`${uid}/actions`).orderByKey().limitToLast(100);
     actionsRef.on('child_added', snapshot => {
       /* Update React state when action is added at Firebase Database */
       let action = { text: snapshot.val(), id: snapshot.key };
@@ -23,12 +38,12 @@ export default class Store {
   }
 
   addAction(value) {
-    fire.database().ref('actions').push(value); //, err => console.log(err.message));
+    fire.database().ref(`${uid}/actions`).push(value); //, err => console.log(err.message));
   }
 
   doAction(id) {
-    let ref = fire.database().ref('actionsTaken').child(id);
-    ref.push({ time: moment().format() });
+    let ref = fire.database().ref(`${uid}/actionsTaken`).child(id);
+    ref.push({ timestamp: firebase.database.ServerValue.TIMESTAMP });
   }
 
   watchActionsTakenFor(id, callback) {
@@ -37,7 +52,7 @@ export default class Store {
     if (this.dbRefs[refKey]) return;
 
 
-    let actionsTakenRef = fire.database().ref('actionsTaken/' + id).orderByKey().limitToLast(50);
+    let actionsTakenRef = fire.database().ref(`${uid}/actionsTaken/${id}`).orderByKey().limitToLast(50);
     actionsTakenRef.on('child_added', snapshot => {
       /* Update React state when action is added at Firebase Database */
       let x = { time: moment(snapshot.val().time), actionId: id, id: snapshot.key };
