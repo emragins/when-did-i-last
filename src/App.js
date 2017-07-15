@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Store from './store';
+import Authentication from './Authentication';
 import ActionsContainer from './actions/ActionsContainer';
 
 
@@ -19,6 +20,35 @@ const Instructions = () => (
 // ActionsContainer.contextTypes = {
 //   store: React.PropTypes.object,
 // }
+
+class Auth extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: undefined
+    }
+    this.auth = new Authentication(u => this.setState({ user: u }),
+      () => this.setState({ user: undefined })
+    );
+  }
+
+  render() {
+    if (!this.state.user)
+      return (
+        <button onClick={this.auth.initiateSignIn}>Sign in!</button>
+      )
+    else
+      return (
+        <div>
+          <div className="greeting">Hello, {this.state.user.displayName}!</div>
+          {this.props.children}
+        </div>
+      );
+
+  }
+
+}
+
 
 class App extends Component {
   constructor(props) {
@@ -40,7 +70,9 @@ class App extends Component {
           <h2>Welcome to React</h2>
         </div>
         <Instructions />
-        <ActionsContainer store={this.state.store} />
+        <Auth store={this.state.store}>
+          <ActionsContainer store={this.state.store} />
+        </Auth>
       </div>
     );
   }

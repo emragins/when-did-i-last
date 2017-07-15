@@ -4,10 +4,9 @@ import moment from 'moment';
 export default class Store {
   constructor() {
     this.dbRefs = {};
-
-
   }
-  
+
+
   watchActions(onAdd, onRemove) {
     let actionsRef = fire.database().ref('actions').orderByKey().limitToLast(100);
     actionsRef.on('child_added', snapshot => {
