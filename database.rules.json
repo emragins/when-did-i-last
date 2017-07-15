@@ -1,6 +1,9 @@
 {
   "rules": {
     ".read": "true",
-    ".write": "true"
+    ".write": "true",
+    "actions": {
+      ".validate" : "newData.isString() && newData.val().length > 0"
+    }
   }
 }

@@ -13,8 +13,10 @@ export default class ActionsContainer extends Component {
     };
   }
   componentWillMount = () => {
-    this.props.store.watchActions((err, action) =>
-      this.setState({ actions: [action].concat(this.state.actions) }));
+    this.props.store.watchActions(
+      (err, action) => this.setState({ actions: [action].concat(this.state.actions) }),
+      (err, action) => this.setState({ actions: this.state.actions.filter(a => a.text != action.text) })
+    );
   }
   addAction(value) {
     this.props.store.addAction(value);

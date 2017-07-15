@@ -7,20 +7,24 @@ export default class Store {
 
 
   }
-  watchActions(callback) {
+  
+  watchActions(onAdd, onRemove) {
     let actionsRef = fire.database().ref('actions').orderByKey().limitToLast(100);
     actionsRef.on('child_added', snapshot => {
       /* Update React state when action is added at Firebase Database */
       let action = { text: snapshot.val(), id: snapshot.key };
-      callback(null, action)
-
+      onAdd(null, action)
+    });
+    actionsRef.on('child_removed', snapshot => {
+      /* Update React state when action is added at Firebase Database */
+      let action = { text: snapshot.val(), id: snapshot.key };
+      onRemove(null, action)
     });
 
   }
 
   addAction(value) {
-
-    fire.database().ref('actions').push(value);
+    fire.database().ref('actions').push(value); //, err => console.log(err.message));
   }
 
   doAction(id) {
