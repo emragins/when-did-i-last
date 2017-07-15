@@ -1,6 +1,8 @@
 # When Did I Last...
 This is a simple little application designed to track when thingns happened in your life, and be able to report on frequency, show trends, etc.
 
+**[Live Here!](https://when-did-i-last-f7108.firebaseapp.com)**
+
 ie. Go to bed.  Wake up.  Take the dog to the park.  Smell the roses.  Eat tarimasu.  
 
 Anything you want.
