@@ -1,3 +1,23 @@
+# When Did I Last...
+This is a simple little application designed to track when thingns happened in your life, and be able to report on frequency, show trends, etc.
+
+ie. Go to bed.  Wake up.  Take the dog to the park.  Smell the roses.  Eat tarimasu.  
+
+Anything you want.
+
+## TODO
+Pull Requests accepted!
+
+- add styling
+- add some cool charts and reports
+- add action renaming
+- add action / timestamp deleting
+- get authentication to work a bit more smoothly
+- add in alternate authentication providers
+
+
+## Original Readme 
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
