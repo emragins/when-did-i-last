@@ -3,7 +3,6 @@ import Authentication from './Authentication';
 import {
   Button
 } from 'reactstrap';
-import fire from './fire';
 
 export default class AuthBlock extends Component {
   constructor(props) {

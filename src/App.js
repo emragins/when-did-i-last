@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Store from './store';
 import ActionsContainer from './actions/ActionsContainer';
@@ -11,12 +10,9 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
   Container,
   Row,
-  Col,
-  Jumbotron,
-  Button
+  Col
 } from 'reactstrap';
 
 const Instructions = () => (

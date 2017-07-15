@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 
 export default class NewActionForm extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   onAdd = (e) => {
     e.preventDefault(); // <- prevent form submit from reloading the page
     /* Send the action to Firebase */

@@ -15,7 +15,7 @@ export default class ActionsContainer extends Component {
   componentWillMount = () => {
     this.props.store.watchActions(
       (err, action) => this.setState({ actions: [action].concat(this.state.actions) }),
-      (err, action) => this.setState({ actions: this.state.actions.filter(a => a.text != action.text) })
+      (err, action) => this.setState({ actions: this.state.actions.filter(a => a.text !== action.text) })
     );
   }
   addAction(value) {
@@ -34,7 +34,7 @@ export default class ActionsContainer extends Component {
   }
 
   hideActionsTaken = (id) => {
-    this.setState({ showActionsFor: this.state.showActionsFor.filter(x => x != id) });
+    this.setState({ showActionsFor: this.state.showActionsFor.filter(x => x !== id) });
 
     this.props.store.stopWatchingActionsTakenFor(id);
   }
@@ -48,9 +48,9 @@ export default class ActionsContainer extends Component {
           { /* Render the list of actions */
             this.state.actions.map(action => {
 
-              const isShown = this.state.showActionsFor.findIndex(x => x == action.id) > -1;
+              const isShown = this.state.showActionsFor.findIndex(x => x === action.id) > -1;
               let times = isShown
-                ? this.state.actionsTaken.filter(x => x.actionId == action.id)
+                ? this.state.actionsTaken.filter(x => x.actionId === action.id)
                 : []
 
               return <Action key={action.id} id={action.id} text={action.text}
