@@ -24,6 +24,9 @@ export default class ActionsContainer extends Component {
   doAction(id) {
     this.props.store.doAction(id);
   }
+  deleteAction(id) {
+    this.props.store.deleteAction(id);
+  }
   showActionsTaken = (id) => {
     this.setState({ showActionsFor: [id].concat(this.state.showActionsFor) });
     this.props.store.watchActionsTakenFor(id, (err, x) =>
@@ -52,6 +55,7 @@ export default class ActionsContainer extends Component {
 
               return <Action key={action.id} id={action.id} text={action.text}
                 actOn={this.doAction.bind(this)}
+                delete={this.deleteAction.bind(this)}
                 times={times}
                 isShown={isShown}
                 show={this.showActionsTaken.bind(this)}

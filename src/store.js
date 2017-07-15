@@ -45,6 +45,15 @@ export default class Store {
     let ref = fire.database().ref(`${uid}/actionsTaken`).child(id);
     ref.push({ timestamp: firebase.database.ServerValue.TIMESTAMP });
   }
+  deleteAction(id) {
+    fire.database().ref(`${uid}/actions/${id}`).remove(); //, err => console.log(err.message));
+    fire.database().ref(`${uid}/actionsTaken/${id}`).remove();
+
+    // stop our listener.. don't know if we need to or not
+    const refKey = 'actionsTaken' + id.substr(1);
+    this.dbRefs[refKey] && this.dbRefs[refKey].off('child_added');
+    this.dbRefs[refKey] = undefined;
+  }
 
   watchActionsTakenFor(id, callback) {
 

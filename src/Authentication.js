@@ -7,8 +7,8 @@ provider.addScope('email');
 let token = undefined;
 
 export default class Authentication {
-  constructor(onStateChange) {
-    firebase.auth().onAuthStateChanged(function (u) {
+  constructor(setUser, removeUser) {
+    fire.auth().onAuthStateChanged(function (u) {
       if (u) {
         let user = {};
         user.displayName = u.displayName;
@@ -18,12 +18,13 @@ export default class Authentication {
         user.isAnonymous = u.isAnonymous;
         user.uid = u.uid;
         user.providerData = u.providerData;
-        
+
         if (user.email)
-          onStateChange(user);
+          setUser(user);
 
         // ...
       } else {
+        removeUser();
         // User is signed out.
         // ...
       }
@@ -31,11 +32,12 @@ export default class Authentication {
 
   }
 
-  initiateSignIn = () => {
+  initiateSignIn = (onPending) => {
     fire.auth().signInWithRedirect(provider)
     fire.auth().getRedirectResult()
       .then((result) => {
         if (result.credential) {
+          onPending();
           // This gives you a Google Access Token. You can use it to access the Google API.
           var token = result.credential.accessToken;
           // The signed-in user info.
@@ -52,6 +54,10 @@ export default class Authentication {
         var credential = error.credential;
         // ...
       });
+  }
+
+  initiateSignOut = (removeUser) => {
+    fire.auth().signOut().then(removeUser);
   }
 
 }

@@ -1,23 +1,52 @@
 import React, { Component } from 'react';
+import {
+  Col,
+  Button,
+  Card,
+  CardTitle,
+  CardBlock
+} from 'reactstrap';
 
 export default class Action extends Component {
-
+  constructor(props) {
+    super(props);
+    this.state = { startDelete: false }
+  }
+  confirmDelete() {
+    this.setState({ startDelete: true })
+  }
+  deleteConfirmed() {
+    this.props.delete(this.props.id);
+  }
   render() {
+    const deleteElements = this.state.startDelete
+      ? (<div>Are you sure you want to delete this item?  You will not be able to recover the data.
+              <br />
+        <Button color="default" onClick={() => this.cancelDelete()}>Cancel</Button>
+        <Button color="danger" onClick={() => this.deleteConfirmed()}>Yes, I don't need it any more</Button>
+      </div>)
+      : <div></div>
     return (
-      <div> {this.props.text}
-        <button onClick={() => this.props.actOn(this.props.id)}>Act</button>
-        <button onClick={() => !this.props.isShown ?
-          this.props.show(this.props.id)
-          : this.props.hide(this.props.id)}>{!this.props.isShown ? 'Show' : 'Hide'}</button>
-        <div className="timesList">
-          {
-            this.props.times.map(t =>
-              <span key={t.id} className="timePoint" style={{ display: 'block' }}>
-                {t.time.format()}
-              </span>
-            )}
-        </div>
-      </div >
+      <Card>
+        <CardTitle>{this.props.text}</CardTitle>
+        <CardBlock>
+          {deleteElements}
+
+          <Button color="primary" onClick={() => this.props.actOn(this.props.id)}>Act</Button>
+          <Button color="danger" onClick={() => this.confirmDelete()}>Delete</Button>
+          <Button color="default" onClick={() => !this.props.isShown ?
+            this.props.show(this.props.id)
+            : this.props.hide(this.props.id)}>{!this.props.isShown ? 'Show' : 'Hide'}</Button>
+          <div className="timesList">
+            {
+              this.props.times.map(t =>
+                <span key={t.id} className="timePoint" style={{ display: 'block' }}>
+                  {t.time.format()}
+                </span>
+              )}
+          </div>
+        </CardBlock>
+      </Card >
     );
   }
 }

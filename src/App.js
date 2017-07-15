@@ -2,9 +2,22 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Store from './store';
-import Authentication from './Authentication';
 import ActionsContainer from './actions/ActionsContainer';
-
+import Auth from './Auth';
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  Container,
+  Row,
+  Col,
+  Jumbotron,
+  Button
+} from 'reactstrap';
 
 const Instructions = () => (
   <div className="instructions">
@@ -21,33 +34,6 @@ const Instructions = () => (
 //   store: React.PropTypes.object,
 // }
 
-class Auth extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: undefined
-    }
-    this.auth = new Authentication(u => this.setState({ user: u }),
-      () => this.setState({ user: undefined })
-    );
-  }
-
-  render() {
-    if (!this.state.user)
-      return (
-        <button onClick={this.auth.initiateSignIn}>Sign in!</button>
-      )
-    else
-      return (
-        <div>
-          <div className="greeting">Hello, {this.state.user.displayName}!</div>
-          {this.props.children}
-        </div>
-      );
-
-  }
-
-}
 
 
 class App extends Component {
@@ -64,15 +50,45 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <Instructions />
-        <Auth store={this.state.store}>
-          <ActionsContainer store={this.state.store} />
-        </Auth>
+      <div>
+        <Navbar color="inverse" inverse toggleable>
+          <NavbarToggler right onClick={this.toggle} />
+          <NavbarBrand href="/">reactstrap</NavbarBrand>
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink href="/components/">Components</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="https://github.com/reactstrap/reactstrap">Github</NavLink>
+              </NavItem>
+            </Nav>
+          </Collapse>
+        </Navbar>
+        <Jumbotron>
+          <Container>
+            <Row>
+              <Col>
+                <h1>When Did I Last...</h1>
+                <p>
+                  <Button
+                    tag="a"
+                    color="success"
+                    size="large"
+                    href="http://reactstrap.github.io"
+                    target="_blank"
+                  >
+                    View Reactstrap Docs
+                  </Button>
+                  <Instructions />
+                  <Auth store={this.state.store}>
+                    <ActionsContainer store={this.state.store} />
+                  </Auth>
+                </p>
+              </Col>
+            </Row>
+          </Container>
+        </Jumbotron>
       </div>
     );
   }
