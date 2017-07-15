@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Store from './store';
 import ActionsContainer from './actions/ActionsContainer';
-import Auth from './Auth';
+import AuthBlock, { SignInOut } from './Auth';
 import {
   Collapse,
   Navbar,
@@ -30,12 +30,6 @@ const Instructions = () => (
 );
 
 
-// ActionsContainer.contextTypes = {
-//   store: React.PropTypes.object,
-// }
-
-
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -53,42 +47,26 @@ class App extends Component {
       <div>
         <Navbar color="inverse" inverse toggleable>
           <NavbarToggler right onClick={this.toggle} />
-          <NavbarBrand href="/">reactstrap</NavbarBrand>
+          <NavbarBrand href="/">When Did I Last...</NavbarBrand>
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="/components/">Components</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">Github</NavLink>
+                <SignInOut />
               </NavItem>
             </Nav>
           </Collapse>
         </Navbar>
-        <Jumbotron>
-          <Container>
-            <Row>
-              <Col>
-                <h1>When Did I Last...</h1>
-                <p>
-                  <Button
-                    tag="a"
-                    color="success"
-                    size="large"
-                    href="http://reactstrap.github.io"
-                    target="_blank"
-                  >
-                    View Reactstrap Docs
-                  </Button>
-                  <Instructions />
-                  <Auth store={this.state.store}>
-                    <ActionsContainer store={this.state.store} />
-                  </Auth>
-                </p>
-              </Col>
-            </Row>
-          </Container>
-        </Jumbotron>
+        <Container>
+          <Row>
+            <Col>
+              <h1>When Did I Last...</h1>
+              <Instructions />
+              <AuthBlock store={this.state.store}>
+                <ActionsContainer store={this.state.store} />
+              </AuthBlock>
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }

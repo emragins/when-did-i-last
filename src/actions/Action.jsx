@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import {
-  Col,
   Button,
   Card,
   CardTitle,
   CardBlock
 } from 'reactstrap';
+
+const TimePoint = (props) => {
+  return (<span key={props.id} className="timePoint" style={{ display: 'block' }}>
+    {props.time.format()}
+  </span>)
+}
 
 export default class Action extends Component {
   constructor(props) {
@@ -40,9 +45,7 @@ export default class Action extends Component {
           <div className="timesList">
             {
               this.props.times.map(t =>
-                <span key={t.id} className="timePoint" style={{ display: 'block' }}>
-                  {t.time.format()}
-                </span>
+                <TimePoint id={t.id} time={t.time} />
               )}
           </div>
         </CardBlock>
