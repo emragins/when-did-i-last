@@ -64,7 +64,7 @@ export default class Store {
     let actionsTakenRef = fire.database().ref(`${uid}/actionsTaken/${id}`).orderByKey().limitToLast(50);
     actionsTakenRef.on('child_added', snapshot => {
       /* Update React state when action is added at Firebase Database */
-      let x = { time: moment(snapshot.val().time), actionId: id, id: snapshot.key };
+      let x = { time: moment(snapshot.val().timestamp), actionId: id, id: snapshot.key };
       callback(null, x);
     });
 
