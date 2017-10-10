@@ -19,6 +19,10 @@ export default class Action extends Component {
     super(props);
     this.state = { startDelete: false }
   }
+  componentWillMount = () => {
+    const weekAgo = moment().startOf('week');
+    this.props.show(this.props.id, weekAgo);
+  }
   confirmDelete() {
     this.setState({ startDelete: true })
   }
@@ -39,7 +43,6 @@ export default class Action extends Component {
     // });
 
     //console.log(timelineData);
-    const weekAgo = moment().startOf('week');
 
     //style={{ display: (this.props.isShown ? 'visible' : 'none') }}
     return (
@@ -50,10 +53,12 @@ export default class Action extends Component {
 
           <Button color="primary" onClick={() => this.props.actOn(this.props.id)}>Act</Button>
           <Button color="danger" onClick={() => this.confirmDelete()}>Delete</Button>
-          <Button color="default" onClick={() => this.props.show(this.props.id, weekAgo)}>Week View</Button>
+          {/* <Button color="default" onClick={() => this.props.show(this.props.id, weekAgo)}>Week View</Button> */}
           <div >
-            <h3>Times</h3>
+            <h4>Week of {moment().startOf('week').format('MMM DD YYYY')}</h4>
+            <div>Total in view: {this.props.times.length}</div>
             <div className="timesList">
+
               {
                 this.props.times.map(t =>
                   <TimePoint key={t.id} id={t.id} time={t.timestamp} />
