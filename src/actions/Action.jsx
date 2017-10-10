@@ -5,10 +5,12 @@ import {
   CardTitle,
   CardBlock
 } from 'reactstrap';
+import Timeline from './../stats/Timeline';
+import moment from 'moment';
 
 const TimePoint = (props) => {
   return (<span key={props.id} className="timePoint" style={{ display: 'block' }}>
-    {props.time.format()}
+    {moment(props.time).format("dddd, MMM DD hh:mm a")}
   </span>)
 }
 
@@ -25,12 +27,21 @@ export default class Action extends Component {
   }
   render() {
     const deleteElements = this.state.startDelete
-      ? (<div>Are you sure you want to delete this item?  You will not be able to recover the data.
+      ? (<div className="deleteBlock">Are you sure you want to delete this item?  You will not be able to recover the data.
               <br />
         <Button color="default" onClick={() => this.cancelDelete()}>Cancel</Button>
         <Button color="danger" onClick={() => this.deleteConfirmed()}>Yes, I don't need it any more</Button>
       </div>)
-      : <div></div>
+      : <div className="deleteBlock"></div>
+
+    // const timelineData = this.props.times.map(t => {
+    //   return { index: t.id, timestamp: t.timestamp };
+    // });
+
+    //console.log(timelineData);
+    const weekAgo = moment().startOf('week');
+
+    //style={{ display: (this.props.isShown ? 'visible' : 'none') }}
     return (
       <Card>
         <CardTitle>{this.props.text}</CardTitle>
@@ -39,14 +50,15 @@ export default class Action extends Component {
 
           <Button color="primary" onClick={() => this.props.actOn(this.props.id)}>Act</Button>
           <Button color="danger" onClick={() => this.confirmDelete()}>Delete</Button>
-          <Button color="default" onClick={() => !this.props.isShown ?
-            this.props.show(this.props.id)
-            : this.props.hide(this.props.id)}>{!this.props.isShown ? 'Show' : 'Hide'}</Button>
-          <div className="timesList">
-            {
-              this.props.times.map(t =>
-                <TimePoint id={t.id} time={t.time} />
-              )}
+          <Button color="default" onClick={() => this.props.show(this.props.id, weekAgo)}>Week View</Button>
+          <div >
+            <h3>Times</h3>
+            <div className="timesList">
+              {
+                this.props.times.map(t =>
+                  <TimePoint key={t.id} id={t.id} time={t.timestamp} />
+                )}
+            </div>
           </div>
         </CardBlock>
       </Card >

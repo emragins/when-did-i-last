@@ -1,22 +1,24 @@
 # When Did I Last...
-This is a simple little application designed to track when thingns happened in your life, and be able to report on frequency, show trends, etc.
-
-**[Live Here!](https://when-did-i-last-f7108.firebaseapp.com)**
-
-ie. Go to bed.  Wake up.  Take the dog to the park.  Smell the roses.  Eat tarimasu.  
+This is a simple little application designed to track when thingns happened in your life, and be able to report on frequency, show trends, etc. ie. Go to bed.  Wake up.  Take the dog to the park.  Smell the roses.  Eat tarimasu.  
 
 Anything you want.
 
-## TODO
-Pull Requests accepted!
 
-- add styling
+**[Live Here!](https://when-did-i-last-f7108.firebaseapp.com)**
+
+
+## TODO
+
+- add better styling
 - add some cool charts and reports
 - add action renaming
-- add action / timestamp deleting
-- get authentication to work a bit more smoothly
-- add in alternate authentication providers
+- add timestamp deleting
+- add in alternate authentication providers (with linking to the same account)
+- add lists
+- add sorting
+- prevent double-click on "act"
 
+Pull Requests accepted!
 
 ## Original Readme 
 

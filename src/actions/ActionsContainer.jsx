@@ -27,10 +27,13 @@ export default class ActionsContainer extends Component {
   deleteAction(id) {
     this.props.store.deleteAction(id);
   }
-  showActionsTaken = (id) => {
+  showActionsTaken = (id, fromMoment, toMoment) => {
     this.setState({ showActionsFor: [id].concat(this.state.showActionsFor) });
-    this.props.store.watchActionsTakenFor(id, (err, x) =>
-      this.setState({ actionsTaken: [x].concat(this.state.actionsTaken) }));
+
+    this.props.store.showActionsTakenFor(id, fromMoment, undefined, (err, x) =>{
+      console.log('adding action', x);
+      this.setState({ actionsTaken: [x].concat(this.state.actionsTaken) })
+    });
   }
 
   hideActionsTaken = (id) => {
