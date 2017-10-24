@@ -1,22 +1,70 @@
 import React, { Component } from 'react';
 import NewActionForm from './NewActionForm';
 import Action from './Action';
+import moment from 'moment';
 
-export default class ActionsContainer extends Component {
+class Transformations {
+  addTimeToAction(id, x) {
+    return (state, currentProps) => {
+      var action = state.actions.byId[id];
+      // add timeId to action
+      action.timeIds.concat(x.id);
+      debugger
+      return {
+        ...state,
+        actions: {
+          ...state.actions,
+          // replace this action
+          [id]: action,
+          // add action to all -- NOT THIS TASK!
+          //allIds: state.actions.allIds.concat(id),
+        },
+        times: {
+          ...state.times,
+          // add time
+          [x.id]: x,
+
+        }
+      };
+    }
+  }
+}
+
+export default class ActionsContainer extends Component {//
 
   constructor(props) {
     super(props);
     this.state = {
       showActionsFor: [],
-      actions: [],
-      actionsTaken: [],
+      actions: {
+        allIds: ['a123'],
+        byId: {
+          a123: {
+            id: 'a123',
+            name: '_fake',
+            timeIds: ['t123'],
+            isShown: false,
+            total: 20,
+            currentWeek: moment().startOf('week'),
+          }
+        }
+      },
+      times: {
+        byId: {
+          t123: {
+            id: 't123',
+            time: moment(),
+
+          }
+        }
+      },
     };
   }
   componentWillMount = () => {
-    this.props.store.watchActions(
-      (err, action) => this.setState({ actions: [action].concat(this.state.actions) }),
-      (err, action) => this.setState({ actions: this.state.actions.filter(a => a.text !== action.text) })
-    );
+    // this.props.store.watchActions(
+    //   (err, action) => this.setState({ actions: [action].concat(this.state.actions) }),
+    //   (err, action) => this.setState({ actions: this.state.actions.filter(a => a.text !== action.text) })
+    // );
   }
   addAction(value) {
     this.props.store.addAction(value);
@@ -27,12 +75,15 @@ export default class ActionsContainer extends Component {
   deleteAction(id) {
     this.props.store.deleteAction(id);
   }
+
   showActionsTaken = (id, fromMoment, toMoment) => {
     this.setState({ showActionsFor: [id].concat(this.state.showActionsFor) });
 
-    this.props.store.showActionsTakenFor(id, fromMoment, undefined, (err, x) =>{
+    this.props.store.showActionsTakenFor(id, fromMoment, undefined, (err, x) => {
       console.log('adding action', x);
-      this.setState({ actionsTaken: [x].concat(this.state.actionsTaken) })
+      this.setState(Transformations.addTimeToAction(id, x));
+
+      //this.setState({ actionsTaken: [x].concat(this.state.actionsTaken) })
     });
   }
 
@@ -43,26 +94,31 @@ export default class ActionsContainer extends Component {
   }
 
   render() {
+    console.log(this.state.actions)
+
     return (
       <div className="actionsContainer">
         <NewActionForm onAdd={this.addAction.bind(this)} />
 
+
         <div>
           { /* Render the list of actions */
-            this.state.actions.map(action => {
+            this.state.actions.allIds.map(id => {
+              const action = this.state.actions.byId[id];
 
-              const isShown = this.state.showActionsFor.findIndex(x => x === action.id) > -1;
-              let times = isShown
-                ? this.state.actionsTaken.filter(x => x.actionId === action.id)
-                : []
+              // const isShown = this.state.showActionsFor.findIndex(x => x === action.id) > -1;
+              // let times = isShown
+              //   ? this.state.actionsTaken.filter(x => x.actionId === action.id)
+              //   : []
 
-              return <Action key={action.id} id={action.id} text={action.text}
+              return <Action key={action.id} id={action.id}
                 actOn={this.doAction.bind(this)}
                 delete={this.deleteAction.bind(this)}
-                times={times}
-                isShown={isShown}
                 show={this.showActionsTaken.bind(this)}
                 hide={this.hideActionsTaken.bind(this)}
+                action={action}
+                times={action.timeIds.map(t => this.state.times.byId[t])}
+
               />
 
             })

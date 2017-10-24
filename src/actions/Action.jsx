@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   Button,
   Card,
@@ -30,6 +30,8 @@ export default class Action extends Component {
     this.props.delete(this.props.id);
   }
   render() {
+    const action = this.props.action;
+
     const deleteElements = this.state.startDelete
       ? (<div className="deleteBlock">Are you sure you want to delete this item?  You will not be able to recover the data.
               <br />
@@ -45,18 +47,22 @@ export default class Action extends Component {
     //console.log(timelineData);
 
     //style={{ display: (this.props.isShown ? 'visible' : 'none') }}
+
+    const currentWeekString = action.currentWeek.format('MMM DD YYYY');
+    const previousWeek = action.currentWeek.add('week', -1);
     return (
       <Card>
-        <CardTitle>{this.props.text}</CardTitle>
+        <CardTitle>{action.name}</CardTitle>
         <CardBlock>
           {deleteElements}
 
-          <Button color="primary" onClick={() => this.props.actOn(this.props.id)}>Act</Button>
-          <Button color="danger" onClick={() => this.confirmDelete()}>Delete</Button>
-          {/* <Button color="default" onClick={() => this.props.show(this.props.id, weekAgo)}>Week View</Button> */}
-          <div >
-            <h4>Week of {moment().startOf('week').format('MMM DD YYYY')}</h4>
-            <div>Total in view: {this.props.times.length}</div>
+          <Button color="default" onClick={() => this.props.toWeek(action.id, previousWeek)}>&lt;</Button>
+            <Button color="primary" onClick={() => this.props.actOn(action.id)}>Act</Button>
+            <Button color="danger" onClick={() => this.confirmDelete()}>Delete</Button>
+          {/* <Button color="default" onClick={() => this.props.show(action.id, weekAgo)}>Week View</Button> */ }
+            < div >
+            <h4>Week of {currentWeekString}</h4>
+            <div>Total in view: {action.timeIds.length}</div>
             <div className="timesList">
 
               {
@@ -69,4 +75,15 @@ export default class Action extends Component {
       </Card >
     );
   }
+}
+
+Action.propTypes = {
+  id: PropTypes.string,
+  currentWeek: PropTypes.object,
+  times: PropTypes.array,
+  total: PropTypes.number,
+
+  actOn: PropTypes.func,
+  toWeek: PropTypes.func,
+
 }
