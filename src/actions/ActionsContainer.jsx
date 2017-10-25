@@ -3,32 +3,43 @@ import NewActionForm from './NewActionForm';
 import Action from './Action';
 import moment from 'moment';
 
-class Transformations {
-  addTimeToAction(id, x) {
+class TransformationsClass {
+  addTimeToAction(id, time) {
     return (state, currentProps) => {
       var action = state.actions.byId[id];
       // add timeId to action
-      action.timeIds.concat(x.id);
+      action.timeIds = action.timeIds.concat(time.id);
+      time.actionId = action.id;
       debugger
+
+      
       return {
         ...state,
         actions: {
           ...state.actions,
           // replace this action
-          [id]: action,
+          byId: {
+            ...state.actions.byId,
+            [id]: action,
+          },
           // add action to all -- NOT THIS TASK!
           //allIds: state.actions.allIds.concat(id),
         },
         times: {
           ...state.times,
           // add time
-          [x.id]: x,
-
+          byId: {
+          ...state.times.byId,
+            [time.id]: time,
+          },
+          allIds: state.times.allIds.concat(time.id),
         }
       };
     }
   }
 }
+
+const Transformations = new TransformationsClass();
 
 export default class ActionsContainer extends Component {//
 
@@ -54,9 +65,10 @@ export default class ActionsContainer extends Component {//
           t123: {
             id: 't123',
             time: moment(),
-
+            actionId: 'a123',
           }
-        }
+        },
+        allIds: ['t123']
       },
     };
   }
