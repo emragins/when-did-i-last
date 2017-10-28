@@ -47,16 +47,15 @@ export default class Action extends Component {
     //console.log(timelineData);
 
     //style={{ display: (this.props.isShown ? 'visible' : 'none') }}
-
-    const currentWeekString = action.currentWeek.format('MMM DD YYYY');
-    const previousWeek = action.currentWeek.add('week', -1);
+    let currentWeekString = action.currentWeek.format('MMM DD YYYY');
+    let previousWeek = action.currentWeek.clone().add('week', -1);
     return (
       <Card>
         <CardTitle>{action.name}</CardTitle>
         <CardBlock>
           {deleteElements}
 
-          <Button color="default" onClick={() => this.props.toWeek(action.id, previousWeek)}>&lt;</Button>
+          <Button color="default" onClick={() => this.props.show(action.id, previousWeek, action.currentWeek.clone())}>&lt;</Button>
             <Button color="primary" onClick={() => this.props.actOn(action.id)}>Act</Button>
             <Button color="danger" onClick={() => this.confirmDelete()}>Delete</Button>
           {/* <Button color="default" onClick={() => this.props.show(action.id, weekAgo)}>Week View</Button> */ }
