@@ -15,7 +15,7 @@ export default class ActionsContainer extends Component {//
         byId: {
           a123: {
             id: 'a123',
-            name: '_fake',
+            name: '_fake action',
             timeIds: ['t123'],
             isShown: false,
             total: 20,

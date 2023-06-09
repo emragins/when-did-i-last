@@ -47,7 +47,7 @@ export default class Action extends Component {
     //console.log(timelineData);
 
     //style={{ display: (this.props.isShown ? 'visible' : 'none') }}
-    let currentWeekString = action.currentWeek.format('MMM DD YYYY');
+    let currentWeekString = action.currentWeek.format('MMM DD, YYYY');
     let previousWeek = action.currentWeek.clone().add('week', -1);
     return (
       <Card>
@@ -60,7 +60,7 @@ export default class Action extends Component {
             <Button color="danger" onClick={() => this.confirmDelete()}>Delete</Button>
           {/* <Button color="default" onClick={() => this.props.show(action.id, weekAgo)}>Week View</Button> */ }
             < div >
-            <h4>Week of {currentWeekString}</h4>
+            <h5>Week of {currentWeekString}</h5>
             <div>Total in view: {action.timeIds.length}</div>
             <div className="timesList">
 
